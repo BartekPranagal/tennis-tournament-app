@@ -14,7 +14,7 @@ import com.vaadin.flow.router.Route;
 import jakarta.annotation.security.PermitAll;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@Route("zawodnicy")
+@Route("")
 @PermitAll
 public class PlayersView extends VerticalLayout {
 

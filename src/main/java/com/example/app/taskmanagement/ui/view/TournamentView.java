@@ -48,7 +48,7 @@ public class TournamentView extends HorizontalLayout {
 
         // --- Lewy panel (konfiguracja) ---
         Button backButton = new Button("Powrót do zawodników", e ->
-                getUI().ifPresent(ui -> ui.navigate("zawodnicy"))
+                getUI().ifPresent(ui -> ui.navigate(""))
         );
         backButton.getStyle().set("margin-bottom", "16px");
 
