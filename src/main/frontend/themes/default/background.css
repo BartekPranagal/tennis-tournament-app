@@ -1,7 +1,7 @@
 .app-background {
     min-height: 100vh;
     min-width: 100vw;
-    background-image: url("../../../resources/static/images/korttenisowy.png");
+    background-image: url("images/korttenisowy.png");
     background-size: cover;
     background-position: center center;
     background-repeat: no-repeat;

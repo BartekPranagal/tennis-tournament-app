@@ -24,11 +24,10 @@ public class PlayersView extends VerticalLayout {
 
     @Autowired
     public PlayersView(PlayerService playerService) {
+        addClassName("app-background");
         this.playerService = playerService;
 
         // Glassowe tło na całość
-        addClassName("app-background");
-
         // --- Glassowy wrapper ---
         VerticalLayout wrapper = new VerticalLayout();
         wrapper.addClassName("players-table-glass");
