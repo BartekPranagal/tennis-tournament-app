@@ -1,0 +1,23 @@
+.app-background {
+    min-height: 100vh;
+    min-width: 100vw;
+    background-image: url("../../../resources/static/images/korttenisowy.png");
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+.fancy-header {
+    font-size: 2.2rem;
+    font-weight: 800;
+    background: linear-gradient(90deg, #00c3ff 0%, #3a7bd5 50%, #004e92 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-fill-color: transparent;
+    letter-spacing: 0.04em;
+    text-shadow: 0 2px 16px rgba(60, 80, 180, 0.16);
+    margin-bottom: 0.5em;
+    margin-top: 0.5em;
+}

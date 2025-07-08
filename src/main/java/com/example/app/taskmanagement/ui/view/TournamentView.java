@@ -7,6 +7,7 @@ import com.example.app.players.service.PlayerService;
 import com.example.app.players.service.TournamentService;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.checkbox.Checkbox;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Span;
@@ -25,6 +26,8 @@ import java.util.stream.Collectors;
 
 @Route("turniej")
 @PermitAll
+@CssImport("./themes/default/background.css")
+@CssImport("./themes/default/styles.css")
 public class TournamentView extends HorizontalLayout {
 
     private final PlayerService playerService;
@@ -39,6 +42,7 @@ public class TournamentView extends HorizontalLayout {
 
     @Autowired
     public TournamentView(PlayerService playerService, TournamentService tournamentService) {
+        addClassName("app-background");
         this.playerService = playerService;
         this.tournamentService = tournamentService;
 
@@ -65,15 +69,6 @@ public class TournamentView extends HorizontalLayout {
                 playersListBox.clear();
             }
         });
-        playersListBox.addValueChangeListener(e -> {
-            Set<Player> allPlayers = playersListBox.getListDataView().getItems().collect(Collectors.toSet());
-            Set<Player> selected = new HashSet<>(playersListBox.getSelectedItems());
-            if (selected.containsAll(allPlayers) && selected.size() == allPlayers.size()) {
-                if (!selectAll.getValue()) selectAll.setValue(true);
-            } else {
-                if (selectAll.getValue()) selectAll.setValue(false);
-            }
-        });
 
         courtsField.setMin(1);
         courtsField.setStep(1);
@@ -85,6 +80,7 @@ public class TournamentView extends HorizontalLayout {
         // Layout do wyboru zawodników + checkboxa
         HorizontalLayout playersSelectRow = new HorizontalLayout(new H3("Wybierz zawodników"), selectAll);
         playersSelectRow.setAlignItems(Alignment.BASELINE);
+        playersSelectRow.setSpacing(true);
 
         VerticalLayout configPanel = new VerticalLayout(
                 backButton,
@@ -93,33 +89,37 @@ public class TournamentView extends HorizontalLayout {
                 courtsField,
                 generateButton
         );
-        configPanel.setPadding(true);
-        configPanel.setWidth("280px");
+        configPanel.addClassName("left-panel-glass");
+        configPanel.setPadding(false);
+        configPanel.setWidth("300px");
         configPanel.setAlignItems(Alignment.START);
+        configPanel.setSpacing(false);
 
         // --- Grid live tabeli wyników ---
         scoreGrid.addColumn(PlayerScore::getPlayerName).setHeader("Zawodnik");
         scoreGrid.addColumn(PlayerScore::getPoints).setHeader("Punkty");
         scoreGrid.addColumn(PlayerScore::getPauses).setHeader("Pauzy");
-        scoreGrid.setWidth("350px");
+        scoreGrid.setWidthFull();
         scoreGrid.setAllRowsVisible(true);
-        scoreGrid.getStyle().set("margin-left", "auto").set("margin-right", "auto");
+        scoreGrid.addClassName("v-grid");
 
         // --- Panel centralny: tabela live + rundy w gridzie ---
         roundsGrid.getStyle()
                 .set("display", "grid")
-                .set("grid-template-columns", "repeat(4, 1fr)")
+                .set("grid-template-columns", "repeat(2, 1fr)")
                 .set("gap", "24px")
                 .set("margin-top", "24px")
                 .set("width", "100%");
 
         // Wrapper do centrowania tabeli live
         VerticalLayout tabelaLiveWrapper = new VerticalLayout();
-        tabelaLiveWrapper.setAlignItems(Alignment.CENTER);
+        tabelaLiveWrapper.setAlignItems(Alignment.START);
         tabelaLiveWrapper.setSpacing(false);
         tabelaLiveWrapper.setPadding(false);
+        tabelaLiveWrapper.addClassName("live-table-glass");
 
         H3 tabelaNaglowek = new H3("Live tabela wyników");
+        tabelaNaglowek.addClassName("fancy-header");
         tabelaNaglowek.getStyle().set("margin-bottom", "0.2em").set("margin-top", "0.2em");
         tabelaLiveWrapper.add(tabelaNaglowek, scoreGrid);
 
@@ -129,9 +129,13 @@ public class TournamentView extends HorizontalLayout {
         rundyWrapper.setSpacing(false);
         rundyWrapper.setPadding(false);
 
+        Div headerBg = new Div();
+        headerBg.addClassName("fancy-header-bg");
         H3 rozpiskaNaglowek = new H3("Rozpiska rund");
+        rozpiskaNaglowek.addClassName("fancy-header");
+        headerBg.add(rozpiskaNaglowek);
         rozpiskaNaglowek.getStyle().set("margin-bottom", "0.5em").set("margin-top", "0.5em");
-        rundyWrapper.add(rozpiskaNaglowek, roundsGrid);
+        rundyWrapper.add(headerBg, roundsGrid);
 
         // Panel centralny – całość na środku
         VerticalLayout centerPanel = new VerticalLayout(
@@ -170,46 +174,47 @@ public class TournamentView extends HorizontalLayout {
     private void refreshView() {
         roundsGrid.removeAll();
         int runda = 1;
+
         // Wyzeruj pauzy
         for (PlayerScore score : playerScores.values()) {
             score.setPauses(0);
         }
+
         for (TournamentRound round : tournamentRounds) {
-            VerticalLayout rundaLayout = new VerticalLayout();
-            rundaLayout.setWidth("420px"); // szeroko, możesz dać np. 480px jeśli masz bardzo długie nazwiska
-            rundaLayout.getStyle()
-                    .set("border", "1px solid #f2f2f2")
-                    .set("border-radius", "14px")
-                    .set("padding", "16px")
-                    .set("background", "#fafbfc");
-            rundaLayout.setSpacing(false);
-            rundaLayout.add(new H3("Runda #" + runda));
+            // Utwórz box rundy jako grid
+            Div rundaGrid = new Div();
+            rundaGrid.addClassName("runda-box-table");
+            rundaGrid.add(new H3("Runda #" + runda) {{
+                getStyle().set("grid-column", "1 / span 5")
+                        .set("margin-bottom", "10px")
+                        .set("margin-top", "2px");
+            }});
+
             for (Match match : round.getMatches()) {
                 if (match.getPlayer1() != null && match.getPlayer2() != null) {
-                    // [imię1] [wynik1] : [wynik2] [imię2]
-                    HorizontalLayout matchLayout = new HorizontalLayout();
-                    matchLayout.setWidthFull();
-                    matchLayout.setAlignItems(Alignment.CENTER);
-
+                    // Gracz 1
                     Span name1 = new Span(match.getPlayer1().getName());
-                    name1.getStyle().set("font-weight", "500").set("margin-right", "8px").set("min-width", "70px");
+                    name1.addClassName("player-name");
 
+                    // Wynik 1
                     IntegerField score1 = new IntegerField();
-                    score1.setWidth("48px");
                     score1.setValue(match.getScore1());
-                    score1.getStyle().set("margin-right", "8px");
+                    score1.addClassName("score-field");
 
+                    // Dwukropek
                     Span colon = new Span(":");
-                    colon.getStyle().set("font-weight", "bold").set("margin", "0 8px");
+                    colon.addClassName("colon");
 
+                    // Wynik 2
                     IntegerField score2 = new IntegerField();
-                    score2.setWidth("48px");
                     score2.setValue(match.getScore2());
-                    score2.getStyle().set("margin-left", "8px");
+                    score2.addClassName("score-field");
 
+                    // Gracz 2
                     Span name2 = new Span(match.getPlayer2().getName());
-                    name2.getStyle().set("font-weight", "500").set("margin-left", "8px").set("min-width", "70px");
+                    name2.addClassName("player-name");
 
+                    // Eventy
                     score1.addValueChangeListener(e -> {
                         match.setScore1(e.getValue());
                         updateLiveScores();
@@ -219,65 +224,26 @@ public class TournamentView extends HorizontalLayout {
                         updateLiveScores();
                     });
 
-                    matchLayout.add(name1, score1, colon, score2, name2);
-                    rundaLayout.add(matchLayout);
+                    rundaGrid.add(name1, score1, colon, score2, name2);
 
                 } else if (match.getPlayer1() != null && match.getPlayer2() == null) {
-                    // Pauzuje player1 — [nazwa]     PRZERWA
-                    HorizontalLayout pauseLayout = new HorizontalLayout();
-                    pauseLayout.setWidthFull();
-                    pauseLayout.setAlignItems(Alignment.CENTER);
+                    // Pauza gracz1
+                    Span pause = new Span(match.getPlayer1().getName() + "  PRZERWA");
+                    pause.addClassName("pause");
+                    rundaGrid.add(pause);
 
-                    Span name = new Span(match.getPlayer1().getName());
-                    name.getStyle()
-                            .set("font-weight", "500")
-                            .set("margin-right", "24px")
-                            .set("min-width", "110px");
-
-                    Span przerwa = new Span("PRZERWA");
-                    przerwa.getStyle()
-                            .set("background", "#f7f7f7")
-                            .set("color", "#455")
-                            .set("font-weight", "bold")
-                            .set("padding", "6px 38px")
-                            .set("border-radius", "8px")
-                            .set("display", "inline-block")
-                            .set("text-align", "center")
-                            .set("font-size", "15px");
-
-                    pauseLayout.add(name, przerwa);
-                    rundaLayout.add(pauseLayout);
                     playerScores.get(match.getPlayer1()).addPause();
 
                 } else if (match.getPlayer2() != null && match.getPlayer1() == null) {
-                    // Pauzuje player2 — [nazwa]     PRZERWA
-                    HorizontalLayout pauseLayout = new HorizontalLayout();
-                    pauseLayout.setWidthFull();
-                    pauseLayout.setAlignItems(Alignment.CENTER);
+                    // Pauza gracz2
+                    Span pause = new Span(match.getPlayer2().getName() + "  PRZERWA");
+                    pause.addClassName("pause");
+                    rundaGrid.add(pause);
 
-                    Span name = new Span(match.getPlayer2().getName());
-                    name.getStyle()
-                            .set("font-weight", "500")
-                            //.set("margin-right", "10px")
-                            .set("min-width", "110px");
-
-                    Span przerwa = new Span("PRZERWA");
-                    przerwa.getStyle()
-                            .set("background", "#f7f7f7")
-                            .set("color", "#455")
-                            .set("font-weight", "bold")
-                            .set("padding", "6px 38px")
-                            .set("border-radius", "8px")
-                            .set("display", "inline-block")
-                            .set("text-align", "center")
-                            .set("font-size", "15px");
-
-                    pauseLayout.add(name, przerwa);
-                    rundaLayout.add(pauseLayout);
                     playerScores.get(match.getPlayer2()).addPause();
                 }
             }
-            roundsGrid.add(rundaLayout);
+            roundsGrid.add(rundaGrid);
             runda++;
         }
         updateLiveScores();

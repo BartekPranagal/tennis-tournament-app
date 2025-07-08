@@ -1,2 +1,343 @@
+/* --- Panel boczny (glass) --- */
+.left-panel-glass {
+    background: rgba(255, 255, 255, 0.93);
+    border-radius: 24px;
+    box-shadow: 0 8px 40px rgba(30, 64, 165, 0.11), 0 2px 10px rgba(40, 80, 160, 0.06);
+    backdrop-filter: blur(8px);
+    padding: 34px 24px 24px 24px;
+    margin: 42px 0 32px 26px;
+    color: #173e6c;
+    font-size: 18px;
+    min-width: 320px;
+    max-width: 340px;
+    width: 300px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 18px;
+}
 
-@import url("dev-login.css");
+.left-panel-glass .vaadin-button,
+.left-panel-glass vaadin-button {
+    background: linear-gradient(95deg, #2563eb 60%, #2563ebc7 100%);
+    color: #fff;
+    font-weight: 600;
+    border-radius: 12px;
+    border: none;
+    padding: 12px 20px;
+    margin-top: 18px;
+    box-shadow: 0 2px 11px rgba(30, 64, 165, 0.12);
+    font-size: 17px;
+    letter-spacing: 0.5px;
+    transition: filter 0.15s;
+}
+
+.left-panel-glass .vaadin-button:hover,
+.left-panel-glass vaadin-button:hover {
+    filter: brightness(1.08) contrast(1.13);
+    cursor: pointer;
+}
+
+.left-panel-glass .title {
+    color: #1652c5;
+    font-weight: 700;
+    font-size: 22px;
+    margin-bottom: 12px;
+}
+
+.left-panel-glass .vaadin-checkbox,
+.left-panel-glass vaadin-checkbox {
+    margin-bottom: 8px;
+    font-size: 16px;
+    color: #103a5e;
+}
+
+/* Lista zawodników */
+.left-panel-glass .vaadin-multi-select-list-box,
+.left-panel-glass vaadin-multi-select-list-box {
+    background: white;
+    border: 1.3px solid #c3dafe;
+    border-radius: 12px;
+    box-shadow: 0 2px 13px rgba(30, 64, 165, 0.06);
+    padding: 8px 0;
+    margin-bottom: 10px;
+}
+
+/* Pole liczby kortów */
+.left-panel-glass .vaadin-integer-field,
+.left-panel-glass vaadin-integer-field {
+    background: white;
+    border-radius: 8px;
+    border: 1px solid #c3dafe;
+    margin-bottom: 12px;
+}
+
+/* Czcionka w panelu */
+.left-panel-glass, .left-panel-glass * {
+    font-family: 'Inter', 'Segoe UI', Arial, sans-serif !important;
+}
+
+/* --- Live tabela (glass) - AUTO SZEROKOŚĆ --- */
+.live-table-glass {
+    background: rgba(255, 255, 255, 0.92);
+    border-radius: 22px;
+    box-shadow: 0 8px 32px 0 rgba(32, 46, 90, 0.13);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
+    border: 1px solid rgba(43, 83, 156, 0.14);
+    padding: 32px 28px 20px 28px;
+    margin-bottom: 24px;
+    min-width: 420px;
+    width: max-content;
+    max-width: 860px; /* możesz zmienić na więcej/mniej */
+    transition: width 0.22s cubic-bezier(.5,1.2,.4,1);
+}
+
+/* Nagłówek tabeli */
+.live-table-glass h3 {
+    margin-top: 0;
+    margin-bottom: 16px;
+    color: #18497b;
+    letter-spacing: 1px;
+    font-size: 1.3em;
+    font-weight: 600;
+}
+
+/* --- Vaadin Grid (tabela wyników) --- */
+.v-grid {
+    border-radius: 16px !important;
+    background: rgba(255,255,255,0.12);
+    box-shadow: 0 1px 8px 0 rgba(34, 71, 112, 0.11);
+    font-size: 1.08em;
+    overflow: hidden;
+    margin-top: 8px;
+    min-width: 320px;
+    width: max-content;
+    max-width: 760px;
+}
+
+.v-grid::part(table) {
+    border-radius: 16px !important;
+    overflow: hidden !important;
+    background: white;
+    box-shadow: 0 2px 12px 0 rgba(34, 71, 112, 0.07);
+    min-width: 320px;
+    width: max-content;
+    max-width: 760px;
+}
+
+.v-grid::part(cell), .v-grid::part(header-cell),
+.v-grid th, .v-grid td {
+    white-space: nowrap;
+    max-width: 460px;
+    text-overflow: clip;
+    overflow: visible;
+}
+
+/* Zaokrąglone rogi nagłówka i stopki */
+.v-grid::part(header-cell):first-child,
+.v-grid::part(cell):first-child {
+    border-top-left-radius: 16px;
+    border-bottom-left-radius: 16px;
+}
+.v-grid::part(header-cell):last-child,
+.v-grid::part(cell):last-child {
+    border-top-right-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+.v-grid::part(row):first-child > .v-grid::part(cell) {
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+}
+
+.v-grid::part(row):last-child > .v-grid::part(cell) {
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+}
+
+/* Kolorowanie 1. miejsca */
+.v-grid tr:first-child td,
+.v-grid::part(row):first-child > .v-grid::part(cell) {
+    font-weight: 700;
+    background: rgba(120, 187, 255, 0.13) !important;
+}
+
+/* --- BOXY RUNDY - dynamiczne szerokości, brak zawijania nazwisk --- */
+.runda-box, .runda-layout {
+    /* nadaj tę klasę do wrappera jednej rundy w Java */
+    border: 1px solid #f2f2f2;
+    border-radius: 14px;
+    padding: 16px;
+    background: #fafbfc;
+    margin: 0 8px 18px 0;
+    transition: width 0.21s cubic-bezier(.4,1.3,.7,1.2);
+    min-width: 420px;
+    width: max-content;
+    max-width: 780px;
+}
+.runda-box span, .runda-layout span {
+    white-space: nowrap;
+    max-width: 350px;
+    overflow: visible;
+    text-overflow: clip;
+}
+
+/* --- Players Table Glass - SZEROKI card tylko do listy zawodników --- */
+.players-table-glass {
+    background: rgba(255, 255, 255, 0.93);
+    border-radius: 22px;
+    box-shadow: 0 8px 32px 0 rgba(32, 46, 90, 0.13);
+    backdrop-filter: blur(2.5px);
+    -webkit-backdrop-filter: blur(2.5px);
+    border: 1px solid rgba(43, 83, 156, 0.12);
+    padding: 32px 28px 20px 28px;
+    margin-bottom: 24px;
+    max-width: 670px;
+    min-width: 370px;
+    width: 630px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.players-table-glass > * {
+    width: 100%;
+}
+
+/* FORMULARZ W PLAYERS - elastyczny layout */
+.players-table-glass .vaadin-horizontal-layout,
+.players-table-glass form {
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 12px;
+}
+.players-table-glass input,
+.players-table-glass .vaadin-text-field {
+    min-width: 180px;
+    flex: 2 1 0%;
+}
+.players-table-glass button {
+    min-width: 135px;
+    white-space: nowrap;
+}
+
+/* --- Responsywność --- */
+@media (max-width: 1000px) {
+    .live-table-glass,
+    .runda-box, .runda-layout {
+        max-width: 99vw;
+        min-width: 240px;
+        padding: 14px 4vw 14px 4vw;
+    }
+    .players-table-glass {
+        max-width: 99vw;
+        min-width: 220px;
+        width: 97vw;
+        padding: 14px 4vw 14px 4vw;
+    }
+}
+
+@media (max-width: 800px) {
+    .left-panel-glass {
+        margin: 18px 0 20px 0;
+        min-width: 96vw;
+        width: 98vw;
+        max-width: 99vw;
+    }
+    .live-table-glass,
+    .runda-box, .runda-layout,
+    .players-table-glass {
+        max-width: 98vw;
+        min-width: 140px;
+        width: 97vw;
+        padding: 8px 2vw 8px 2vw;
+    }
+}
+
+.runda-box-table {
+    display: grid;
+    grid-template-columns: 250px 54px 16px 54px 250px; /* Zawodnik1, Wynik1, :, Wynik2, Zawodnik2 */
+    gap: 9px 12px;
+    align-items: center;
+    background: #fafbfc;
+    border-radius: 14px;
+    border: 1px solid #f2f2f2;
+    padding: 16px;
+    margin: 0 8px 18px 0;
+    min-width: 420px;
+    width: max-content;
+    max-width: 760px;
+    transition: width 0.21s cubic-bezier(.4,1.3,.7,1.2);
+}
+.runda-box-table .player-name {
+    font-weight: 500;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 245px;
+    min-width: 70px;
+}
+.runda-box-table .score-field {
+    width: 54px;
+    min-width: 44px;
+    max-width: 60px;
+    text-align: center;
+}
+.runda-box-table .colon {
+    text-align: center;
+    font-weight: bold;
+    font-size: 1.22em;
+}
+.runda-box-table .pause {
+    grid-column: 1 / span 5;
+    justify-self: center;
+    background: #f7f7f7;
+    color: #455;
+    font-weight: bold;
+    padding: 6px 38px;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+    font-size: 15px;
+    margin: 6px 0 6px 0;
+}
+
+/* Responsywność dla rundy w gridzie */
+@media (max-width: 800px) {
+    .runda-box-table {
+        max-width: 99vw;
+        min-width: 160px;
+        grid-template-columns: 1fr 36px 12px 36px 1fr;
+        padding: 10px 3vw 10px 3vw;
+    }
+    .runda-box-table .player-name {
+        max-width: 90vw;
+        min-width: 36px;
+    }
+}
+
+.fancy-header-bg {
+    display: inline-block;
+    background: rgba(28, 43, 93, 0.19);   /* ciemniejsze, półprzezroczyste granatowe szkło */
+    border-radius: 17px;
+    padding: 10px 44px 10px 44px;
+    box-shadow: 0 3px 16px 0 rgba(32, 46, 90, 0.18);
+    margin-bottom: 20px;
+    margin-top: 6px;
+    backdrop-filter: blur(2.5px);
+}
+
+.fancy-header {
+    color: #fff;
+    font-weight: 900;
+    font-size: 2.5rem;
+    letter-spacing: 1px;
+    line-height: 1.17;
+    text-shadow:
+            0 3px 10px #25386890,    /* ciemny cień dla wyrazistości */
+            0 1px 0 #11325b;
+    position: relative;
+    z-index: 2;
+}
