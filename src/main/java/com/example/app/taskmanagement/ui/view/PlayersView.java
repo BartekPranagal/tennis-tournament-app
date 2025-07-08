@@ -4,6 +4,7 @@ import com.example.app.players.entity.Player;
 import com.example.app.players.service.PlayerService;
 import com.vaadin.flow.component.Key;
 import com.vaadin.flow.component.button.Button;
+import com.vaadin.flow.component.dependency.CssImport;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 import com.vaadin.flow.component.html.H3;
@@ -17,6 +18,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 @Route("")
 @PermitAll
+@CssImport("./themes/default/background.css")
+@CssImport("./themes/default/styles.css")
 public class PlayersView extends VerticalLayout {
 
     private final PlayerService playerService;
