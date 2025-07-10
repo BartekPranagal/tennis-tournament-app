@@ -184,37 +184,32 @@ public class TournamentView extends HorizontalLayout {
             // Utwórz box rundy jako grid
             Div rundaGrid = new Div();
             rundaGrid.addClassName("runda-box-table");
-            rundaGrid.add(new H3("Runda #" + runda) {{
-                getStyle().set("grid-column", "1 / span 5")
-                        .set("margin-bottom", "10px")
-                        .set("margin-top", "2px");
-            }});
+
+            H3 rundaNaglowek = new H3("Runda #" + runda);
+            rundaNaglowek.getStyle().set("grid-column", "1 / span 5")
+                    .set("margin-bottom", "10px")
+                    .set("margin-top", "2px");
+            rundaGrid.add(rundaNaglowek);
 
             for (Match match : round.getMatches()) {
                 if (match.getPlayer1() != null && match.getPlayer2() != null) {
-                    // Gracz 1
                     Span name1 = new Span(match.getPlayer1().getName());
-                    name1.addClassName("player-name");
+                    name1.addClassName("player-name-left");
 
-                    // Wynik 1
                     IntegerField score1 = new IntegerField();
                     score1.setValue(match.getScore1());
                     score1.addClassName("score-field");
 
-                    // Dwukropek
                     Span colon = new Span(":");
                     colon.addClassName("colon");
 
-                    // Wynik 2
                     IntegerField score2 = new IntegerField();
                     score2.setValue(match.getScore2());
                     score2.addClassName("score-field");
 
-                    // Gracz 2
                     Span name2 = new Span(match.getPlayer2().getName());
-                    name2.addClassName("player-name");
+                    name2.addClassName("player-name-right");
 
-                    // Eventy
                     score1.addValueChangeListener(e -> {
                         match.setScore1(e.getValue());
                         updateLiveScores();
@@ -224,22 +219,19 @@ public class TournamentView extends HorizontalLayout {
                         updateLiveScores();
                     });
 
+                    // WAŻNE: kolejność!
                     rundaGrid.add(name1, score1, colon, score2, name2);
-
-                } else if (match.getPlayer1() != null && match.getPlayer2() == null) {
-                    // Pauza gracz1
+                }
+                else if (match.getPlayer1() != null && match.getPlayer2() == null) {
                     Span pause = new Span(match.getPlayer1().getName() + "  PRZERWA");
                     pause.addClassName("pause");
                     rundaGrid.add(pause);
-
                     playerScores.get(match.getPlayer1()).addPause();
-
-                } else if (match.getPlayer2() != null && match.getPlayer1() == null) {
-                    // Pauza gracz2
+                }
+                else if (match.getPlayer2() != null && match.getPlayer1() == null) {
                     Span pause = new Span(match.getPlayer2().getName() + "  PRZERWA");
                     pause.addClassName("pause");
                     rundaGrid.add(pause);
-
                     playerScores.get(match.getPlayer2()).addPause();
                 }
             }
@@ -273,7 +265,6 @@ public class TournamentView extends HorizontalLayout {
     }
 
     // --- klasy pomocnicze ---
-
     public static class PlayerScore {
         private String playerName;
         private int points;

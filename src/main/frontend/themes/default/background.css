@@ -21,3 +21,62 @@
     margin-bottom: 0.5em;
     margin-top: 0.5em;
 }
+
+.runda-box-table {
+    display: grid;
+    grid-template-columns: 110px 80px 30px 80px 110px;
+    gap: 0 8px;
+    background: rgba(255,255,255,0.97);
+    border-radius: 22px;
+    box-shadow: 0 4px 24px 0 rgba(32, 46, 90, 0.11);
+    padding: 22px 38px 24px 38px;
+    margin-bottom: 32px;
+    font-size: 1.18em;
+    align-items: center;
+}
+
+.player-name-left {
+    text-align: right;
+    font-weight: 600;
+    color: #27394b;
+    padding-right: 2px;
+    min-width: 0;
+    width: 110px;
+}
+
+.player-name-right {
+    text-align: left;
+    font-weight: 600;
+    color: #27394b;
+    padding-left: 2px;
+    min-width: 0;
+    width: 110px;
+}
+
+.score-field {
+    width: 65px;
+    background: #eaf1fa;
+    border-radius: 10px;
+    border: none;
+    text-align: center;
+}
+
+.colon {
+    text-align: center;
+    font-size: 1.28em;
+    font-weight: 700;
+    color: #275a95;
+}
+
+.pause {
+    grid-column: 1 / span 5;
+    margin: 18px auto 8px auto;
+    text-align: center;
+    background: #f8fafd;
+    color: #42505a;
+    font-weight: 700;
+    padding: 16px 0;
+    border-radius: 13px;
+    font-size: 1.15em;
+    letter-spacing: 0.05em;
+}
